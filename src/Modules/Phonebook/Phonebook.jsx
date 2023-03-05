@@ -29,9 +29,9 @@ const Phonebook = () => {
     dispatch(fetchAllContacts());
   }, [dispatch]);
 
-  const handleAddContact = ({ name, number }) => {
+  const handleAddContact = ({ name, phone }) => {
     //----------------------  add friends filter ???
-    dispatch(fetchAddContact({ name, number }));
+    dispatch(fetchAddContact({ name, phone }));
   };
 
   const removeContact = id => {
@@ -42,10 +42,10 @@ const Phonebook = () => {
     dispatch(setFilter(target.value));
   };
   console.log(filter);
-  const elementsLi = contactsFilter.map(({ id, name, number }) => (
+  const elementsLi = contactsFilter.map(({ id, name, phone }) => (
     <li className={styles.li} key={id}>
       <div>
-        {name} : {number}
+        {name} : {phone}
       </div>
       <Button removeContact={removeContact} id={id} />
     </li>
