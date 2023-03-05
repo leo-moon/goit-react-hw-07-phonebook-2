@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as api from '../../shared/services/contacts';
 
 export const fetchAllContacts = createAsyncThunk(
-  'contacts/fetchAll',
+  'contacts/fetch-all',
   async (_, thunkAPI) => {
     try {
       const data = await api.getAllContacts();

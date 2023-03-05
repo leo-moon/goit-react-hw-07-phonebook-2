@@ -6,11 +6,11 @@ import styles from './contact-form.module.scss';
 const ContactForm = ({onSubmit}) => {
   const [con, setCon] = useState({ ...initState });
 
-  const { name, number } = con;
+  const { name, phone } = con;
 
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit({ name, number });
+    onSubmit({ name, phone });
     setCon({ ...initState });
   };
 
@@ -38,8 +38,8 @@ const ContactForm = ({onSubmit}) => {
       <div className={styles.block}>
         <label className={styles.title}>Number</label>
         <input
-          name="number"
-          value={number}
+          name="phone"
+          value={phone}
           onChange={handleChange}
           placeholder="+012 123-4567"
           className={styles.input}

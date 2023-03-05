@@ -1,29 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import { nanoid } from 'nanoid';
 
 import {
   fetchAllContacts,
   fetchAddContact,
   fetchDeleteContact,
 } from './contacts-operations';
-// import {
-//   fetchAllContactsLoading,
-//   fetchAllContactsSuccess,
-//   fetchAllContactsError,
-//   fetchAddContactLoading,
-//   fetchAddContactSuccess,
-//   fetchAddContactError,
-//   fetchDeleteContactLoading,
-//   fetchDeleteContactSuccess,
-//   fetchDeleteContactError,
-// } from './contacts-actions';
 
 const initialState = {
   items: [
-    // { id: nanoid(), name: 'Eden Clements', number: '645-17-79', friend: true },
-    // { id: nanoid(), name: 'Annie Copeland', number: '645-45-85', friend: true },
-    // { id: nanoid(), name: 'Rosie Simpson', number: '459-12-56', friend: false },
-    // { id: nanoid(), name: 'Hermione Kline', number: '443-89-12', friend: true },
   ],
   loading: false,
   error: null,
@@ -37,8 +21,9 @@ const contactsSlice = createSlice({
       .addCase(fetchAllContacts.pending, store => {
         store.loading = true;
       })
-      .addCase(fetchAllContacts.fulfilled, store => {
-        store.loading = true;
+      .addCase(fetchAllContacts.fulfilled, (store, { payload }) => {
+        store.loading = false;
+        store.items = payload;
       })
       .addCase(fetchAllContacts.rejected, (store, { payload }) => {
         store.loading = false;
@@ -72,5 +57,4 @@ const contactsSlice = createSlice({
   },
 });
 
-// export const { addContacts, deleteContacts } = contactsSlice.actions;
 export default contactsSlice.reducer;

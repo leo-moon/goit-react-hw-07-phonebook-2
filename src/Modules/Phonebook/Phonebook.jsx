@@ -12,15 +12,13 @@ import {
   fetchDeleteContact,
 } from '../../redux/contacts/contacts-operations';
 
+import { getFilter } from '../../redux/filter/filter-selectors';
 import { setFilter } from 'redux/filter/filter-slice';
 
 import { getFilterContacts } from '../../redux/contacts/contacts-selectors';
 
-import { getFilter } from '../../redux/filter/filter-selectors';
-
 const Phonebook = () => {
   const contactsFilter = useSelector(getFilterContacts);
-  // const contacts = useSelector(fetchAllContacts);
   const filter = useSelector(getFilter);
 
   const dispatch = useDispatch();
