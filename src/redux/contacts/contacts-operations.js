@@ -1,66 +1,52 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import * as api from '../../shared/services/contacts';
 
-// import {
-//   fetchAllContactsLoading,
-//   fetchAllContactsSuccess,
-//   fetchAllContactsError,
-//   fetchAddContactLoading,
-//   fetchAddContactSuccess,
-//   fetchAddContactError,
-//   fetchDeleteContactLoading,
-//   fetchDeleteContactSuccess,
-//   fetchDeleteContactError,
-// } from './contacts-actions';
-import * as actions from './contacts-actions';
-
-export const fetchAllContacts = () => {
-  const func = async dispatch => {
+export const fetchAllContacts = createAsyncThunk(
+  'contacts/fetchAll',
+  async (_, thunkAPI) => {
     try {
-      dispatch(actions.fetchAllContactsLoading());
       const data = await api.getAllContacts();
-      dispatch(actions.fetchAllContactsSuccess(data));
+      return data;
     } catch ({ response }) {
-      dispatch(actions.fetchAllContactsError('response.data.message'));
+      return thunkAPI.rejectWithValue(response.data);
     }
-  };
-  return func;
-};
+  }
+);
 
-const isDublicate = (contacts, { name }) => {
-  const nameLower = name.toLowerCase();
-  const dublicate = contacts.find(
-    contact => contact.name.toLowerCase() === nameLower
-  );
-  return Boolean(dublicate);
-};
-
-export const fetchAddContact = data => {
-  const func = async (dispatch, getState) => {
+export const fetchAddContact = createAsyncThunk(
+  'contacts/add',
+  async (data, { rejectWithValue }) => {
     try {
+      const result = await api.addContact(data);
+      return result;
+    } catch ({ response }) {
+      return rejectWithValue(response.data);
+    }
+  },
+  {
+    condition: ({ name }, { getState }) => {
       const { contacts } = getState();
-      if (isDublicate(contacts.items, data)) {
-        alert(`${data.name} is already in contacts`);
+      const nameLower = name.toLowerCase();
+      const isDublicate = contacts.items.find(
+        ({ name }) => name.toLowerCase() === nameLower
+      );
+      if (isDublicate) {
+        alert(`${name} is already in contacts`);
         return false;
       }
-      dispatch(actions.fetchAddContactLoading());
-      const result = await api.addContact(data);
-      dispatch(actions.fetchAddContactSuccess(result));
-    } catch ({ response }) {
-      dispatch(actions.fetchAddContactError(response.data.message));
-    }
-  };
-  return func;
-};
+    },
+  }
+);
 
-export const fetchDeleteContact = id => {
-  const func = async dispatch => {
+export const fetchDeleteContact = createAsyncThunk(
+  'contacts/fetch-delete',
+  async (id, {rejectWithValue}) => {
     try {
-      dispatch(actions.fetchDeleteContactLoading());
       await api.deleteContact(id);
-      dispatch(actions.fetchDeleteContactSuccess(id));
+      return id;
     } catch ({ response }) {
-      dispatch(actions.fetchDeleteContactError(response.data.message));
+      return rejectWithValue(response.data);
     }
-  };
-  return func;
-};
+  }
+);
